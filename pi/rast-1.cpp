@@ -13,6 +13,15 @@ struct {
 } ppmImage;
 
 
+void negativo (int** matrix, int linhas, int colunas){
+	for(int i=0; i<linhas; i++){
+		for (int j = 0; j<colunas; j++){
+			matrix[i][j] = ((matrix[i][j])-255)*(-1);			
+		}
+	}
+}
+
+
 int main (int argc, char* argv[]){
 	std::ifstream imagemPPM;
 
@@ -34,7 +43,16 @@ int main (int argc, char* argv[]){
 		int x, y;
 		x = std::stoi(colunas);
 		y = std::stoi(linhas);
-		int matrixPixel[y][x]; 
+
+
+		// explicação no whatsapp de o porquê a matrix ser construída assim
+		int **matrixPixel= new int*[y];
+		for(int i = 0; i <y; i++){
+			matrixPixel[i]= new int[x];
+		} 
+
+
+
 		// no arquivo ppm é coluna - linha, pra colcoar na matrix invertemos
 		for (int i = 0; i<y; i++){
 			for (int j = 0; j<x; j++){
@@ -43,6 +61,8 @@ int main (int argc, char* argv[]){
 				matrixPixel[i][j] = std::stoi(strTemp);
 			}
 		}
+
+		negativo(matrixPixel,y,x);
 
 		//crio o novo arquivo
 		std::ofstream novaImagem;
@@ -64,7 +84,6 @@ int main (int argc, char* argv[]){
 		novaImagem << valorMaximoNI << std::endl;
 
 		// escrevo os pixels
-
 		for (int i = 0; i<y; i++){
 			for (int j = 0; j<x; j++){
 				std::string pixelTemp;
@@ -72,6 +91,8 @@ int main (int argc, char* argv[]){
 				novaImagem << pixelTemp << std::endl;
 			}
 		}
+
+
 
 	imagemPPM.close();
 	return 0;
