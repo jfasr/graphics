@@ -21,6 +21,19 @@ void negativo (int** matrix, int linhas, int colunas){
 	}
 }
 
+void maisContraste (int** matrix, int linhas, int colunas){
+	for (int i = 0; i<linhas; i++){
+		for (int j = 0; j<colunas; j++){
+			if ((matrix[i][j]) < 126){
+				matrix[i][j] = matrix[i][j]/1.4; 
+			}
+			else if (((matrix[i][j]) >= 127) && ((matrix[i][j]) <= 196)){
+				matrix[i][j] = matrix[i][j]*1.15;
+			}
+		}
+	}
+}
+
 
 int main (int argc, char* argv[]){
 	std::ifstream imagemPPM;
@@ -62,7 +75,7 @@ int main (int argc, char* argv[]){
 			}
 		}
 
-		negativo(matrixPixel,y,x);
+		maisContraste(matrixPixel,y,x);
 
 		//crio o novo arquivo
 		std::ofstream novaImagem;
