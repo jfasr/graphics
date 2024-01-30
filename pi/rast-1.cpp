@@ -13,6 +13,8 @@ struct {
 } ppmImage;
 
 
+
+
 void negativo (int** matrix, int linhas, int colunas){
 	for(int i=0; i<linhas; i++){
 		for (int j = 0; j<colunas; j++){
@@ -21,14 +23,14 @@ void negativo (int** matrix, int linhas, int colunas){
 	}
 }
 
-void maisContraste (int** matrix, int linhas, int colunas){
+void limiar (int** matrix, int linhas, int colunas, int limite){
 	for (int i = 0; i<linhas; i++){
 		for (int j = 0; j<colunas; j++){
-			if ((matrix[i][j]) < 126){
-				matrix[i][j] = matrix[i][j]/1.4; 
+			if ((matrix[i][j]) < limite){
+				matrix[i][j] = 0;
 			}
-			else if (((matrix[i][j]) >= 127) && ((matrix[i][j]) <= 196)){
-				matrix[i][j] = matrix[i][j]*1.15;
+			else {
+				matrix[i][j] = 255;
 			}
 		}
 	}
@@ -38,6 +40,7 @@ void maisContraste (int** matrix, int linhas, int colunas){
 int main (int argc, char* argv[]){
 	std::ifstream imagemPPM;
 
+	int limite_limiar = std::stoi(argv[2]);
 	imagemPPM.open(argv[1]); //pego o segundo argumento que é o nosso arquivo
 	
 	//tendo certeza que o arquivo foi aberto corretamente
@@ -75,7 +78,8 @@ int main (int argc, char* argv[]){
 			}
 		}
 
-		maisContraste(matrixPixel,y,x);
+		limiar(matrixPixel,y,x,limite_limiar);
+		
 
 		//crio o novo arquivo
 		std::ofstream novaImagem;
