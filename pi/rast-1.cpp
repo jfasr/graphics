@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
-
+/*
 struct {
 	std::string tipo;
 	int colunas; //width = largura
@@ -12,7 +12,7 @@ struct {
 	int *matrizImagem;
 } ppmImage;
 
-
+*/
 
 
 void negativo (int** matrix, int linhas, int colunas){
@@ -34,6 +34,19 @@ void limiar (int** matrix, int linhas, int colunas, int limite){
 			}
 		}
 	}
+}
+
+int* gerarHistograma(int** matrix, int linhas, int colunas){
+	int *arrayHistograma = new int [255];
+	for (int i = 0; i<256; i++){
+		arrayHistograma[i] = 0;
+	}
+	for(int i= 0; i<linhas; i++){
+		for(int j=0; j<colunas; j++){
+			arrayHistograma[matrix[i][j]]++;
+		}
+	}
+	return arrayHistograma;
 }
 
 
@@ -69,7 +82,7 @@ int main (int argc, char* argv[]){
 
 
 
-		// no arquivo ppm é coluna - linha, pra colcoar na matrix invertemos
+		// no arquivo ppm é coluna - linha, pra colocoar na matrix invertemos
 		for (int i = 0; i<y; i++){
 			for (int j = 0; j<x; j++){
 				std::string strTemp;
@@ -78,7 +91,7 @@ int main (int argc, char* argv[]){
 			}
 		}
 
-		limiar(matrixPixel,y,x,limite_limiar);
+		//limiar(matrixPixel,y,x,limite_limiar);
 		
 
 		//crio o novo arquivo
@@ -107,6 +120,18 @@ int main (int argc, char* argv[]){
 				pixelTemp = std::to_string(matrixPixel[i][j]);
 				novaImagem << pixelTemp << std::endl;
 			}
+		}
+
+		int* histograma = gerarHistograma(matrixPixel, y, x);
+		//crio arquivo pro histograma
+		std::ofstream novaImagemHistograma;
+		novaImagemHistograma.open("histograma.txt");
+
+		for(int i = 0; i<256; i++){
+			std::string temp, posicao;
+			temp = std::to_string(histograma[i]);
+			posicao = std::to_string(i);
+			novaImagemHistograma << posicao << ':' << temp << std::endl;
 		}
 
 
